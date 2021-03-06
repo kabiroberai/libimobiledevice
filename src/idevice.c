@@ -804,7 +804,7 @@ LIBIMOBILEDEVICE_API idevice_error_t idevice_get_udid(idevice_t device, char **u
 }
 
 /**
- * Internally used gnutls/openssl callback function for receiving encrypted data.
+ * Internally used SSL callback function for receiving encrypted data.
  */
 static ssize_t internal_ssl_read(idevice_connection_t connection, char *buffer, size_t length)
 {
@@ -856,7 +856,7 @@ static ssize_t internal_ssl_read(idevice_connection_t connection, char *buffer, 
 }
 
 /**
- * Internally used gnutls/openssl callback function for sending encrypted data.
+ * Internally used SSL callback function for sending encrypted data.
  */
 static ssize_t internal_ssl_write(idevice_connection_t connection, const char *buffer, size_t length)
 {
@@ -916,7 +916,7 @@ static long ssl_idevice_bio_callback(BIO *b, int oper, const char *argp, int arg
 	size_t len = (size_t)argi;
 	switch (oper) {
 	case (BIO_CB_READ|BIO_CB_RETURN):
-		return argp ? internal_ssl_read(conn, (char *)argp, len) : 0;
+		return argp ? (long)internal_ssl_read(conn, (char *)argp, len) : 0;
 	case (BIO_CB_PUTS|BIO_CB_RETURN):
 		len = strlen(argp);
 		// fallthrough
