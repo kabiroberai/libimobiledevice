@@ -607,7 +607,7 @@ LIBIMOBILEDEVICE_API idevice_error_t idevice_connection_send(idevice_connection_
 	}
 }
 
-static idevice_error_t socket_recv_to_idevice_error(int conn_error, uint32_t len, uint32_t received)
+static inline idevice_error_t socket_recv_to_idevice_error(int conn_error, uint32_t len, uint32_t received)
 {
 	if (conn_error < 0) {
 		switch (conn_error) {
@@ -699,7 +699,7 @@ LIBIMOBILEDEVICE_API idevice_error_t idevice_connection_receive_timeout(idevice_
 
 		debug_info("SSL_read %d, received %d", len, received);
 		if (received < len) {
-			*recv_bytes = 0;
+			*recv_bytes = received;
 			return connection->status == IDEVICE_E_SUCCESS ? IDEVICE_E_SSL_ERROR : connection->status;
 		}
 
